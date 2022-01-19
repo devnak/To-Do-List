@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+        .wrapper {
+            display: flex;
+        }
+        .todo_wrapper {
+            padding: 10px;
+            flex: 1;
+            min-height: 300px;
+        }
+        .done_wrapper {
+            padding: 10px;
+            flex: 1;
+            min-height: 300px;
+        }
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+        li {
+            display: flex;
+            justify-content: space-between;
+            list-style-type: none;
+            padding: 10px;
+            margin: 0;
+            margin-bottom: 10px;
+            background: white;
+            border-radius:  5px;;
+        }
+    </style>
+    <script>
+        const data = {
+            todo: [],
+            done: [],
+        }
+
+        function dateFormat(date) {
+            let month = date.getMonth() + 1;
+            let day = date.getDate();
+            let hour = date.getHours();
+            let minute = date.getMinutes();
+            let second = date.getSeconds();
+
+            if(month < 10) {
+                month = '0' + month;
+            }
+            if(day < 10) {
+                day = '0' + day;
+            }
+            if(hour < 10) {
+                hour = '0' + hour;
+            }
+            if(minute < 10) {
+                minute = '0' + minute;
+            }
+            if(second < 10) {
+                second = '0' + second;
+            }
+            
+            return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+        }
+
+
+        function appendTodoView() {
+            for(v of data.todo)
+            {
+                clearInterval(v.timer);
+            }
+            document.getElementById('todo').innerHTML = '';
+    
+            for (let i = 0;i<data.todo.length;i++) {
+                let v = data.todo[i];
+                let element = document.createElement('li');
+                element.innerHTML = v.text;
+                let dateElement = document.createElement('div');
+                dateElement.innerHTML = dateFormat(v.date);
+                let remainElement = document.createElement('div');
+                remainElement.setAttribute('id','remain-' + v.id);
+                remainElement.innerHTML = v.remain;
+                let btnElement = document.createElement('div');
+                
+                let doneElement = document.createElement('input');
+                doneElement.setAttribute('type','button');
+                doneElement.setAttribute('value','완료');
+                doneElement.setAttribute('id','done-' + i);
+                let deleteElement = document.createElement('input');
+                deleteElement.setAttribute('type','button');
+                deleteElement.setAttribute('value','삭제');
+                deleteElement.setAttribute('id','todo-del-' + i);
+                
+                btnElement.appendChild(doneElement);
+                btnElement.appendChild(deleteElement);
+
+                element.appendChild(dateElement);
+                element.appendChild(remainElement);
+                element.appendChild(btnElement);
+                
+                document.getElementById("todo").appendChild(element);
+
+                
+                $(`#done-${i}`).click(function() {
+                    console.log(v);
+                    v.doneDate = new Date();
+                    data.done.push(v);
+                    let newData = [];
+                    for(let i = 0;i<data.todo.length;i++) {
+                        if(data.todo[i].id != v.id) {
+                            newData.push(data.todo[i]);
+                        }
+                    }
+                    data.todo = newData;
+                            
+                    clearInterval(v.timer);
+                    appendTodoView();
+                    appendDoneView();
+                });
+                $(`#todo-del-${i}`).click(function () {
+                    let newData = [];
+                    for(let i = 0;i<data.todo.length;i++) {
+                        if(data.todo[i].id != v.id) {
+                            newData.push(data.todo[i]);
+                        }
+                    }
+                    data.todo = newData;
+                    clearInterval(v.timer);
+                    appendTodoView();
+                });
+
+                v.timer = setInterval(() => {
+                    const currentDate = new Date();
+                    if(v.remain == "TIMEOUT" ) return;
+                    if(v.date - currentDate <= 1000) {
+                        v.remain = "TIMEOUT";
+                        $(`#remain-${v.id}`).text(v.remain);
+                        clearInterval(v.timer);
+                        return;
+                    }
+                    let remain_sec = parseInt((v.date - currentDate) / 1000);
+                   
+                    let remain_min = parseInt(remain_sec / (60));
+                    let remain_hour = parseInt(remain_sec / (60 * 60));
+                    let remain_day = parseInt(remain_sec / (60 * 60 * 24));
+
+                    let result = "";
+                    if(remain_day > 0) {
+                        result += remain_day + "일 ";
+                    }
+                    if(remain_hour % 24 > 0) {
+                        result += (remain_hour % 24) + "시 "; 
+                    }
+                    if(remain_min % 60 > 0) {
+                        result += (remain_min % 60) + "분 ";
+                    }
+                    result += (remain_sec % 60) + "초";
+                    v.remain = result;
+                    console.log(v.remain);
+                    $(`#remain-${v.id}`).text(v.remain);
+                }, 1000);
+            }
+
+        }
+
+
+        function appendDoneView() {
+            document.getElementById('done').innerHTML = '';
+
+            for (let i = 0;i<data.done.length;i++) {
+                let v = data.done[i];
+                let element = document.createElement('li');
+                element.innerHTML = v.text;
+                let dateElement = document.createElement('div');
+                dateElement.innerHTML = dateFormat(v.date);
+                let btnElement = document.createElement('div');
+
+                let todoElement = document.createElement('input');
+                todoElement.setAttribute('type','button');
+                todoElement.setAttribute('value','To-do로 이동');
+                todoElement.setAttribute('id','todo-' + i);
+                let deleteElement = document.createElement('input');
+                deleteElement.setAttribute('type','button');
+                deleteElement.setAttribute('value','삭제');
+                deleteElement.setAttribute('id','done-del-' + i);
+
+                btnElement.appendChild(todoElement);
+                btnElement.appendChild(deleteElement);
+                element.appendChild(dateElement);
+                element.appendChild(btnElement);
+                
+                document.getElementById('done').appendChild(element);
+
+                $(`#todo-${i}`).click(function() {
+                    console.log(v);
+                    data.todo.push(v);
+                    
+                    let newData = [];
+                    for(let i = 0;i<data.done.length;i++) {
+                        if(data.done[i].id != v.id) {
+                            newData.push(data.done[i]);
+                        }
+                    }
+                    data.done = newData;
+                    
+                    appendTodoView();
+                    appendDoneView();
+                });
+                $(`#done-del-${i}`).click(function() {
+                    let newData = [];
+                    for(let i = 0;i<data.done.length;i++) {
+                        if(data.done[i].id != v.id) {
+                            newData.push(data.done[i]);
+                        }
+                    }
+                    data.done = newData;
+                    appendDoneView();
+                    
+                });
+            }
+
+        }
+
+        function getUniqueId() {
+            return parseInt(Math.random() * 1000);
+        }
+
+
+        function buttonClickHandler() {
+            const text = document.querySelector('#todo_text').value;
+            const date = document.querySelector('#datepicker').value;
+
+            if(text == '') {
+                alert("내용을 입력해주세요.");
+                return;
+            }
+            if(date == '') {
+                alert("완료 기간을 입력해주세요.");
+                return;
+            }
+            if(new Date(date) < new Date()) {
+                alert("과거로는 설정할 수 없습니다.");
+                return;
+            }
+                
+            data.todo.push({
+                id: getUniqueId(),
+                date: new Date(date),
+                doneDate: null,
+                remain: '-',
+                timer: null,
+                text
+            });
+            appendTodoView(text);
+            document.querySelector('#todo_text').value = '';
+        }
+        $(document).ready(function(){
+            document.getElementById('todo_theme').value = "#f58578";
+            document.getElementById('done_theme').value = "#9578f5";
+            
+            document.getElementById('todo_wrapper').style.background = "#f58578";
+            document.getElementById('done_wrapper').style.background = "#9578f5";
+            
+
+            $('#todo_theme').change(function(e) {
+                document.getElementById('todo_wrapper').style.background = e.target.value;
+            
+            });
+            $('#done_theme').change(function(e) {
+                document.getElementById('done_wrapper').style.background = e.target.value;
+            });
+            
+
+            $('#input_btn').click(buttonClickHandler);
+        });
+
+    </script>
+
+  </head>
+
+  <body>
+    <h1>Todo Project</h1>
+    <label>할일</label>
+    <input type="text" id="todo_text"></input>
+    <label>완료기간</label>
+    <input type="datetime-local" id="datepicker">
+    <input type="button" value="입력" id="input_btn"></input>
+    <label>Todo Theme</label>
+    <input type="color" id="todo_theme">
+    <label>Done Theme</label>
+    <input type="color" id="done_theme">
+    <div class="wrapper">
+    
+    <div class="todo_wrapper" id="todo_wrapper">
+        <h2>Todo</h2>
+        <li><div>일정</div><div>완료기한</div><div>남은시간</div><div>버튼</div></li>
+        <ul id='todo'>
+            
+        </ul>
+    </div>
+
+    <div class="done_wrapper" id="done_wrapper">
+        <h2>Done</h2>
+        <li><div>일정</div><div>완료기한</div><div>버튼</div></li>
+        <ul id='done'>
+            
+        </ul>
+    </div>
+</div>
+  </body>
+</html>
