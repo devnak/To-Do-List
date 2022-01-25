@@ -2,8 +2,9 @@ html {
   margin: 0;
 }
 body {
-  border: 5px solid black;
+  margin: 3;
 }
+
 h1 {
   text-align: center;
   color: blue;
@@ -14,22 +15,27 @@ form {
 
 table,
 tr,
-th {
+th,
+td {
   border: 1px solid black;
   border-collapse: collapse;
   width: 800px;
-  height: 25px;
+  height: auto;
 }
 
 .dosection {
-  border: 1px solid gray;
+  margin: auto;
   display: inline-block;
-  width: 49%;
-  height: 500px;
+  width: 881px;
+  height: 1000px;
 }
 .donesection {
-  border: 1px solid gray;
+  margin: auto;
   display: inline-block;
-  width: 49%;
-  height: 500px;
+  width: 881px;
+  height: 1000px;
+}
+
+.last {
+  border-bottom: 1px solid black;
 }
