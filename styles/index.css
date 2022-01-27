@@ -1,0 +1,56 @@
+html {
+  margin: 0;
+}
+body {
+  margin: 3;
+}
+
+h1 {
+  text-align: center;
+  color: blue;
+}
+form {
+  text-align: left;
+}
+
+table,
+tr,
+th,
+td {
+  margin: auto;
+  background-color: white;
+  border: 1px solid black;
+  border-collapse: collapse;
+  width: 95%;
+  height: 25px;
+  table-layout: fixed;
+  text-align: center;
+}
+
+.dosection {
+  background-color: rgb(160, 236, 194);
+  margin: auto;
+  display: inline-block;
+  width: 50%;
+  height: 800px;
+}
+.donesection {
+  background-color: rgb(216, 236, 160);
+  margin: auto;
+  display: inline-block;
+  width: 50%;
+  height: 800px;
+}
+
+.last {
+  border-top: 1px solid black;
+}
+
+h2 {
+  margin: 20px;
+  display: inline-block;
+  width: 50%;
+}
+caption {
+  font-size: 20px;
+}

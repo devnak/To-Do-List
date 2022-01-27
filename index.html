@@ -7,7 +7,7 @@
         <meta name="author" content="Jang Eun Hak">
         <meta name="description" content="To Do List">
 
-        <link href="styles/main.css" rel="stylesheet" type="text/css">
+        <link href="styles/index.css" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     </head>
     <body>
@@ -28,34 +28,29 @@
                 <button id="dobutton" type="button" onclick="pushlist()">추가</button>
             </fieldset>
         </form>
-
         <div class="dosection">
             <h2 class="ToDo">To Do</h2>
-            <p>추가한 일 목록입니다.</p>
             <table id="do table">
-                <caption>Not Yet List</caption>
+                <caption>Do List</caption>
                 <thead>
                     <th>할 일</th>
                     <th>목표 날짜</th>
                     <th>남은 시간</th>
-                    <th>처리</th>
+                    <th>비고</th>
                 </thead>
             </table>
-        </div>
-       
-        <div class="donesection">
+        </div><div class="donesection">
             <h2 class="Done">Done</h2>
-            <p>완료 된 일 목록입니다.</p>
             <table id="done table">
-                <caption>Finish List</caption>
+                <caption>Done List</caption>
                 <thead>
                     <th>끝낸 일</th>
-                    <th>목표 날짜</th>    
+                    <th>목표 날짜</th>
+                    <th>비고</th>    
                 </thead>
             </table>
         </div>
-       
         <footer class="last" style="text-align:right;">Made by <a href="https://github.com/devnak" title="Github" target="_blank">Jang Eun Hak</a></footer>
     </body>
-<script src="script/main.js"></script>
+<script src="script/index.js"></script>
 </html>
