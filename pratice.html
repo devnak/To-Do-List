@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      class Todo {
+        constructor(todo, sec) {
+          this.todo = todo;
+          this.sec = Number(sec);
+          this.dom = document.createElement("div");
+          this.dom.innerText = todo;
+
+          this.timer = setInterval(() => {
+            this.sec--;
+            this.renderHTML();
+            if (this.sec === 0) clearInterval(this.timer);
+          }, 1000);
+        }
+
+        renderHTML() {
+          const todoResult = document.getElementById("todo_result");
+          this.dom.innerText = `[ ${this.todo} ] 남은 시간 : ${this.sec}초`;
+        }
+
+        getDOM() {
+          return this.dom;
+        }
+      }
+
+      window.onload = () => {
+        const addBtn = document.getElementById("addBtn");
+        const resultDOM = document.getElementById("todo_result");
+
+        addBtn.onclick = () => {
+          const todo = document.getElementById("todo");
+          const sec = document.getElementById("sec");
+
+          const todoElem = new Todo(todo.value, sec.value);
+
+          resultDOM.appendChild(todoElem.getDOM());
+        };
+      };
+    </script>
+  </head>
+  <body>
+    <div>
+      <label>할 일</label>
+      <input type="text" value="" id="todo" />
+      <label>제한시간</label>
+      <input type="text" value="" id="sec" />
+      <label>초</label>
+      <input type="button" value="추가" id="addBtn" />
+    </div>
+
+    <div id="todo_result"></div>
+  </body>
+</html>

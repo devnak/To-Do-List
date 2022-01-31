@@ -1,7 +1,7 @@
 let do_sequence = 0;
 let done_sequence = 0;
-let dotable = document.getElementById("do table");
-let donetable = document.getElementById("done table");
+let dotable = document.getElementById("do_table");
+let donetable = document.getElementById("done_table");
 let vava;
 let listtime;
 let st1 = "완료";
@@ -17,32 +17,29 @@ function pushlist(){
     let create_tr = document.createElement("tr");
     let create_td = document.createElement("td");
     let name = document.getElementById("doname").value;
-    create_td.appendChild(document.createTextNode(name));
+    create_td.innerText = name;
     create_tr.appendChild(create_td);
 
     let create_td1 = document.createElement("td");
-    
-    create_td1.appendChild(document.createTextNode(listtime));
+    create_td1.innerText = listtime;
     create_tr.appendChild(create_td1);
 
     let create_td2 = document.createElement("td");
     create_tr.appendChild(create_td2);
     let end = new Date(listtime);
-    var _second = 1000;
-    var _minute = _second * 60;
-    var _hour = _minute * 60;
-    var _day = _hour * 24;
-    var timer;
+    let _second = 1000;
+    let _minute = _second * 60;
+    let _hour = _minute * 60;
+    let _day = _hour * 24;
+    let timer;
     timer = setInterval(showRemaining, 1000);
     function showRemaining() {
-        var now = new Date();
-        var distance = end - now;
-
-        var distance = end - now;
-        var days = Math.floor(distance / _day);
-        var hours = Math.floor((distance % _day) / _hour);
-        var minutes = Math.floor((distance % _hour) / _minute);
-        var seconds = Math.floor((distance % _minute) / _second);
+        let now = new Date();
+        let distance = end - now;
+        let days = Math.floor(distance / _day);
+        let hours = Math.floor((distance % _day) / _hour);
+        let minutes = Math.floor((distance % _hour) / _minute);
+        let seconds = Math.floor((distance % _minute) / _second);
         vava = document.createTextNode(days + '일 '+ hours + '시간 '+minutes + '분 '+seconds + '초');
         create_td2.innerHTML = vava.textContent;
     
@@ -55,8 +52,8 @@ function pushlist(){
     listbutton2.className = "listdelete" + do_sequence;
     listbutton1.setAttribute("onclick", "popbutton("+do_sequence+")");
     listbutton2.setAttribute("onclick", "deletebutton("+do_sequence+")");
-    listbutton1.appendChild(document.createTextNode(st1));
-    listbutton2.appendChild(document.createTextNode(st2));
+    listbutton1.innerText = st1;
+    listbutton2.innerText = st2;
     create_td3.appendChild(listbutton1);
     create_td3.appendChild(listbutton2);
     create_tr.appendChild(create_td3);
@@ -78,7 +75,7 @@ function popbutton(num){
     listbutton3.className = "donerestore" + done_sequence;
     listbutton3.setAttribute("onclick", "restorebutton("+done_sequence+")");
 
-    listbutton3.appendChild(document.createTextNode(st3));
+    listbutton3.innerText = st3;
     create_td4.appendChild(listbutton3);
     create_tr1.appendChild(copyname);
     create_tr1.appendChild(copytime);
@@ -103,5 +100,4 @@ function restorebutton(num){
     pushlist();
     donetable.removeChild(restorevalue);
 }
-
 
