@@ -1,32 +1,29 @@
-let do_sequence = 0;
-let done_sequence = 0;
 let dotable = document.getElementById("do_table");
 let donetable = document.getElementById("done_table");
-let vava;
-let listtime;
+let do_sequence = 0;
+let done_sequence = 0;
+let Change_time;
+let Goal_time;
 let st1 = "완료";
 let st2 = "삭제";
 let st3 = "복원";
+let pushbutton = document.getElementById("Do_button");
 
+pushbutton.addEventListener("click", Push_Button);
 
-function pushlist(){
-
-    listtime = document.getElementById("dotime").value.replace("T", " ") + ":00";
-    if((new Date() - new Date(listtime)) > 0) return alert("과거는 선택이 안됩니다.");
+function Push_Button(){
+    Goal_time = document.getElementById("Do_time").value.replace("T", " ") + ":00";
+    if((new Date() - new Date(Goal_time)) > 0) return alert("과거는 선택이 안됩니다.");
 
     let create_tr = document.createElement("tr");
     let create_td = document.createElement("td");
-    let name = document.getElementById("doname").value;
-    create_td.innerText = name;
-    create_tr.appendChild(create_td);
-
+    create_td.innerText = document.getElementById("Do_name").value;
+ 
     let create_td1 = document.createElement("td");
-    create_td1.innerText = listtime;
-    create_tr.appendChild(create_td1);
+    create_td1.innerText = Goal_time;
 
     let create_td2 = document.createElement("td");
-    create_tr.appendChild(create_td2);
-    let end = new Date(listtime);
+    let end = new Date(Goal_time);
     let _second = 1000;
     let _minute = _second * 60;
     let _hour = _minute * 60;
@@ -40,27 +37,35 @@ function pushlist(){
         let hours = Math.floor((distance % _day) / _hour);
         let minutes = Math.floor((distance % _hour) / _minute);
         let seconds = Math.floor((distance % _minute) / _second);
-        vava = document.createTextNode(days + '일 '+ hours + '시간 '+minutes + '분 '+seconds + '초');
-        create_td2.innerHTML = vava.textContent;
-    
+        Change_time = document.createTextNode(days + '일 '+ hours + '시간 '+minutes + '분 '+seconds + '초');
+        create_td2.innerHTML = Change_time.textContent;
     }
+    // 남은 시간 띄우는 기능
 
     let create_td3 = document.createElement("td");
     let listbutton1 = document.createElement("button");
     let listbutton2 = document.createElement("button");
+
     listbutton1.className = "listpop" + do_sequence;
     listbutton2.className = "listdelete" + do_sequence;
+
     listbutton1.setAttribute("onclick", "popbutton("+do_sequence+")");
     listbutton2.setAttribute("onclick", "deletebutton("+do_sequence+")");
+
     listbutton1.innerText = st1;
     listbutton2.innerText = st2;
+
     create_td3.appendChild(listbutton1);
     create_td3.appendChild(listbutton2);
+    
+    create_tr.appendChild(create_td);
+    create_tr.appendChild(create_td1);
+    create_tr.appendChild(create_td2);
     create_tr.appendChild(create_td3);
-
     dotable.appendChild(create_tr);
     
     do_sequence += 1;
+
 }
 
 function popbutton(num){
@@ -95,9 +100,9 @@ function restorebutton(num){
     let restorevalue = document.getElementsByClassName("donerestore0").item(0).parentNode.parentNode;
     let restorename = restorevalue.childNodes[0].innerHTML;
     let restoretime = restorevalue.childNodes[1].innerHTML;
-    document.getElementById("doname").value = restorename;
+    document.getElementById("Do_name").value = restorename;
     restoretime = restoretime.slice(0,10) + "T" + restoretime.slice(11,16);
-    pushlist();
+    Push_Button();
     donetable.removeChild(restorevalue);
 }
 
